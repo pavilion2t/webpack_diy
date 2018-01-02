@@ -18,20 +18,17 @@ function Controller() {
   this.dinnerData = []
   this.modifierSet = null
   this.isLunch = 0
-
   this.requestUrl = "https://bindo.com/api/v4/stores/26100/"
-  this.date = "" 
+  this.date = ""
   this.newDate = null
   this.hanleRequestAllData()
 }
 
 Controller.prototype.hanleRequestAllData = function() {
   var self = this
-
   clearInterval(this.requestTimer)
   this.requestTimer = setInterval(function() {
     self.hanleRequestAllData()
-  // }, 5000);
   }, 2 * 60 * 1000);
 
   $.get(this.requestUrl + "favorite_tabs?with_details=true&per_page=999", {}, function(res) {
@@ -39,8 +36,7 @@ Controller.prototype.hanleRequestAllData = function() {
       week = new Date().getDay(),
       week = week + 1 + '';
 
-    self.allData = [] 
-
+    self.allData = []
     res.forEach(function(item) {
       item.favorite_tab.available_days.includes(week) && self.allData.push(item.favorite_tab);
     });
@@ -48,10 +44,7 @@ Controller.prototype.hanleRequestAllData = function() {
     self.allData.sort(function(a, b) {
       return a.position - b.position;
     });
-
-
     var modifier_set_ids = []
-
     self.allData.forEach(function(favorite_tab_item) {
       favorite_tab_item.favorite_sections.forEach(function(favorites) {
         favorites.favorites.forEach(function(favorite) {
@@ -61,12 +54,9 @@ Controller.prototype.hanleRequestAllData = function() {
         });
       })
     });
-
     self.modifierSet = {}
-
     modifier_set_ids.forEach(function(item) {
       $.get(self.requestUrl + 'modifier_sets/' + item, {}, function(res) {
-        // console.log(res.modifier_set)
         self.modifierSet[res.modifier_set.id] = res.modifier_set
         self.render()
         self.bgTimer()
@@ -79,13 +69,10 @@ Controller.prototype.bgTimer = function() {
   var self = this
   this.date = moment().format('YYYY-MM-DD')
   this.newDate = moment()
-  // this.newDate = moment(this.date + ' 17:00:00')
   var isLunch = this.newDate.isBetween(this.date + ' 08:59:59', this.date + ' 17:00:00') ? 1 : 0;
-
   clearInterval(this.renderTimer)
   this.renderTimer = setInterval(function() {
     self.bgTimer();
-    // console.log(isLunch ,self.isLunch)
     if(isLunch !== self.isLunch) {
       self.render();
     }
@@ -104,14 +91,12 @@ Controller.prototype.render = function() {
   var favorite_tab_right = []
   var modifier_set = this.modifierSet
   var self = this
-
   self.afterFilterData = []
   self.allData.forEach(function(item) {
     if(self.newDate.isBetween(self.date + ' ' + item.available_time_from, self.date + ' ' + item.available_time_to)) {
         self.afterFilterData.push(item);
     }
   });
-
   this.afterFilterData.forEach(function(item, idx) {
     if(idx < menu_left_length) {
       favorite_tab_left.push(item)
@@ -119,7 +104,6 @@ Controller.prototype.render = function() {
       favorite_tab_right.push(item)
     }
   });
-
   var html = '';
   html += '<div class="half left col-md-6">'
   html += '<div class="top">'
@@ -227,4 +211,3 @@ Controller.prototype.render = function() {
   html += '</div>'
   $("main").html(html);
 }
-
