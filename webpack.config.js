@@ -1,19 +1,25 @@
 const path = require('path');
+const webpack = require("webpack");
 const HtmlWebpackPlugin = require("html-webpack-plugin")
 const CleanWebpackPlugin = require("clean-webpack-plugin")
 
 module.exports = {
   entry: {
     app: './src/index.js',
-    print: './src/print.js'
   },
+  devtool: 'inline-source-map',
   devServer: {
     contentBase: "./dist"
   },
   plugins: [
     new CleanWebpackPlugin(["dist"]),
     new HtmlWebpackPlugin({
-      title: "Output Management"
+      title: "Output Management",
+      template: './public/index.html'
+    }),
+    new webpack.ProvidePlugin({
+       $: "jquery",
+       jQuery: "jquery"
     })
   ],
   output: {
