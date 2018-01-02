@@ -1,0 +1,15 @@
+.col-md-6{ padding: 0; }
+.col-md-12{ padding: 0 30px 60px 67px; }
+main{ background: url(../img/background.png); width: 100%; height: 100%; background-size:cover; }
+.half{ padding-bottom: 500px; margin-bottom: -500px; }
+.half.left{ background: rgba(255,255,255,.5); }
+body{ font-size: 30px; font-family: Helvetica, Arial, Sans-Serif; color: #000;}
+table{ margin: 40px auto 0; width: 100%; }
+table th{ padding-bottom:20px; text-align: center; }
+table th.th-first{ text-align: left; padding-left: 40px; }
+table td{ height: 44px; line-height: 44px; text-align: center; font-size: 26px; }
+table td.td-first{ text-align: left;}
+table .cn{ margin-right: 10px; }
+table .en{ font-size: 24px; font-family: PingFangSC-Light; }
+table .en.package{ font-weight: bold; }
+table img{ width: 38px; height: 38px; vertical-align: middle;}
